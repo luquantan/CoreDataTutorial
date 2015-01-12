@@ -29,7 +29,7 @@ static NSString * const CDTPhotoEntityName = @"Photo";
     NSError *fetchError;
     NSArray *matches = [context executeFetchRequest:request error:&fetchError];
     
-    if (!fetchError || fetchError || [matches count] > 1) {
+    if (fetchError || [matches count] > 1) {
         NSLog(@"FetchError occured: %@", fetchError.localizedDescription);
     } else if ([matches count]) {
         //A match is found, the same photo is returned.
