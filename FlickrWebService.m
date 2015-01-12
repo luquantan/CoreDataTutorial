@@ -17,7 +17,7 @@
 
 @implementation FlickrWebService
 
-+ (void)getPhotoAtURL:(NSURL *)url withCompletionHandler:(void (^)(int *, NSError *))completionBlock
++ (void)getPhotoAtURL:(NSURL *)url withCompletionHandler:(void (^)(UIImage *image, NSError *))completionBlock
 {
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
