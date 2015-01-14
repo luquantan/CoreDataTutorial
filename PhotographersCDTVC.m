@@ -8,7 +8,7 @@
 
 #import "PhotographersCDTVC.h"
 #import "Photographer.h"
-#import "PhotoDatabaseAvailability.h"
+#import "CDTSharedManagedDocument.h"
 
 static NSString * const CDTPhotographerCDTVCReusableCellIdentifier = @"Photographer Cell";
 
@@ -16,12 +16,7 @@ static NSString * const CDTPhotographerCDTVCReusableCellIdentifier = @"Photograp
 
 - (void)awakeFromNib
 {
-    [[NSNotificationCenter defaultCenter] addObserverForName:PhotoDatabaseAvailabilityNotification
-                                                      object:nil
-                                                       queue:nil
-                                                  usingBlock:^(NSNotification *note) {
-                                                      self.managedObjectContext = note.userInfo[PhotoDatabaseAvailabilityContext];
-                                                  }];
+    self.managedObjectContext = [CDTSharedManagedDocument sharedManagedDocument].context;
 }
 
 - (void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
