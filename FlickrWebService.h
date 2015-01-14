@@ -11,5 +11,6 @@
 
 @interface FlickrWebService : NSObject
 
-- (void)startForegroundFlickrFetch;
+- (void)startForegroundFlickrFetchWithCompletion:(void(^)())completion;
+
 @end

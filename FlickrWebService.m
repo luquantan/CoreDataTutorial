@@ -24,12 +24,6 @@ static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
 
 @implementation FlickrWebService
 
-+ (void)getPhotoAtURL:(NSURL *)url withCompletionHandler:(void (^)(UIImage *image, NSError *))completionBlock
-{
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
-}
-
 // standard "get photo information from Flickr URL" code
 
 - (NSArray *)flickrPhotosAtURL:(NSURL *)url
@@ -65,7 +59,7 @@ static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
 }
 
 
-- (void)startForegroundFlickrFetch
+- (void)startForegroundFlickrFetchWithCompletion:(void(^)())completion
 {
     if (self.photoDatabaseContext) {
         NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration ephemeralSessionConfiguration];
@@ -76,17 +70,17 @@ static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
         NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request completionHandler:^(NSURL *localFile, NSURLResponse *response, NSError *error) {
             if (error) {
                 NSLog(@"Flickr background fetch failed: %@", error.localizedDescription);
-                completionHandler(UIBackgroundFetchResultNoData);
+                completion(UIBackgroundFetchResultNoData);
             } else {
                 [self loadFlickrPhotosFromLocalURL:localFile intoContext:self.photoDatabaseContext andThenExecuteBlock:^{
-                    completionHandler(UIBackgroundFetchResultNewData);
+                    completion(UIBackgroundFetchResultNewData);
                 }
                  ];
             }
         }];
         [task resume];
     } else {
-        completionHandler(UIBackgroundFetchResultNoData); // no app-switcher update if no database!
+        completion(UIBackgroundFetchResultNoData); // no app-switcher update if no database!
     }
 }
 
