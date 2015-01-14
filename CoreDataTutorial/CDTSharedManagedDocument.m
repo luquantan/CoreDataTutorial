@@ -7,6 +7,7 @@
 //
 
 #import "CDTSharedManagedDocument.h"
+#import "PhotoDatabaseAvailability.h"
 
 @interface CDTSharedManagedDocument()
 @property (strong, nonatomic) NSURL *managedDocumentURL;
@@ -47,6 +48,7 @@
         [managedDocument openWithCompletionHandler:^(BOOL success) {
             if (success) {
                 [self getContextFromManagedDocument];
+                [[NSNotificationCenter defaultCenter] postNotificationName:PhotoDatabaseAvailabilityNotification object:self];
             } else {
                 NSLog(@"Couldn't open document at %@", self.managedDocumentURL);
             }
@@ -55,6 +57,7 @@
         [managedDocument saveToURL:managedDocument.fileURL forSaveOperation:UIDocumentSaveForCreating completionHandler:^(BOOL success) {
             if (success) {
                 [self getContextFromManagedDocument];
+                [[NSNotificationCenter defaultCenter] postNotificationName:PhotoDatabaseAvailabilityNotification object:self];
             } else {
                 NSLog(@"Couldn't create document at %@", self.managedDocumentURL);
             }
@@ -65,8 +68,8 @@
 - (void)createURLForManagedDocument
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSURL *documentsDirectory = [[fileManager URLsForDirectory:NSDocumentationDirectory inDomains:NSUserDomainMask] firstObject];
-    NSString *documentName = @"CDTDocuments";
+    NSURL *documentsDirectory = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
+    NSString *documentName = @"DataModel";
     NSURL *url = [documentsDirectory URLByAppendingPathComponent:documentName];
     
     self.managedDocumentURL = url;

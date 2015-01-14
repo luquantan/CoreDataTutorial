@@ -14,7 +14,6 @@ static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
 
 @interface AppDelegate ()
 @property (strong, nonatomic) FlickrWebService *flickrWebService;
-@property (strong, nonatomic) NSManagedObjectContext *photoDatabaseContext;
 @end
 
 @implementation AppDelegate

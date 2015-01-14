@@ -45,6 +45,7 @@
 		D959F24D1A6405360025D4D5 /* Photo+FromFlickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Photo+FromFlickr.m"; sourceTree = "<group>"; };
 		D959F24F1A64054B0025D4D5 /* Photographer+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Photographer+Create.h"; sourceTree = "<group>"; };
 		D959F2501A64054B0025D4D5 /* Photographer+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Photographer+Create.m"; sourceTree = "<group>"; };
+		D95B35661A671FB2003CD064 /* PhotoDatabaseAvailability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoDatabaseAvailability.h; sourceTree = "<group>"; };
 		D98BBFE01A642E2200B3AE07 /* FlickrWebService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrWebService.h; sourceTree = "<group>"; };
 		D98BBFE11A642E2200B3AE07 /* FlickrWebService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrWebService.m; sourceTree = "<group>"; };
 		D98BBFE31A64601E00B3AE07 /* PhotographersCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotographersCDTVC.h; sourceTree = "<group>"; };
@@ -105,6 +106,7 @@
 		D98BBFED1A64670800B3AE07 /* UIManagedDocument */ = {
 			isa = PBXGroup;
 			children = (
+				D95B35661A671FB2003CD064 /* PhotoDatabaseAvailability.h */,
 				D98BBFEA1A6466FF00B3AE07 /* CDTSharedManagedDocument.h */,
 				D98BBFEB1A6466FF00B3AE07 /* CDTSharedManagedDocument.m */,
 			);
@@ -253,6 +255,11 @@
 				TargetAttributes = {
 					D9D1534E1A605B02002F5062 = {
 						CreatedOnToolsVersion = 6.1.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					D9D153671A605B02002F5062 = {
 						CreatedOnToolsVersion = 6.1.1;
