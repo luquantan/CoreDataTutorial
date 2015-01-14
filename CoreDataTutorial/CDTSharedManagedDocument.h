@@ -11,7 +11,7 @@
 
 @interface CDTSharedManagedDocument : NSObject
 
-+ (instancetype)CDTSharedManagedDocument;
++ (instancetype)sharedManagedDocument;
 
 @property (strong, nonatomic) NSManagedObjectContext *context;
 

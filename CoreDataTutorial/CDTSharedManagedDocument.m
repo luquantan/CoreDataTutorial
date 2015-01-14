@@ -15,7 +15,7 @@
 
 @implementation CDTSharedManagedDocument
 
-+ (instancetype)CDTSharedManagedDocument
++ (instancetype)sharedManagedDocument
 {
     static CDTSharedManagedDocument *sharedDocument = nil;
     static dispatch_once_t singleToken;
