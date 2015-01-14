@@ -99,6 +99,7 @@
 				D98BBFE61A64601E00B3AE07 /* CoreDataTableViewController.m */,
 			);
 			name = Controllers;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		D98BBFED1A64670800B3AE07 /* UIManagedDocument */ = {
@@ -108,15 +109,11 @@
 				D98BBFEB1A6466FF00B3AE07 /* CDTSharedManagedDocument.m */,
 			);
 			name = UIManagedDocument;
-			path = CoreDataTutorial;
 			sourceTree = "<group>";
 		};
 		D9D153461A605B02002F5062 = {
 			isa = PBXGroup;
 			children = (
-				D98BBFED1A64670800B3AE07 /* UIManagedDocument */,
-				D98BBFE91A64602600B3AE07 /* Controllers */,
-				D9D153921A63FE5B002F5062 /* Flickr Fetcher */,
 				D9D153511A605B02002F5062 /* CoreDataTutorial */,
 				D9D1536B1A605B02002F5062 /* CoreDataTutorialTests */,
 				D9D153501A605B02002F5062 /* Products */,
@@ -135,6 +132,10 @@
 		D9D153511A605B02002F5062 /* CoreDataTutorial */ = {
 			isa = PBXGroup;
 			children = (
+				D9D153961A63FECF002F5062 /* Model */,
+				D98BBFED1A64670800B3AE07 /* UIManagedDocument */,
+				D98BBFE91A64602600B3AE07 /* Controllers */,
+				D9D153921A63FE5B002F5062 /* Flickr Fetcher */,
 				D9D153561A605B02002F5062 /* AppDelegate.h */,
 				D9D153571A605B02002F5062 /* AppDelegate.m */,
 				D9D153591A605B02002F5062 /* ViewController.h */,
@@ -181,9 +182,9 @@
 				D9D1538D1A63FE50002F5062 /* FlickrFetcher.m */,
 				D98BBFE01A642E2200B3AE07 /* FlickrWebService.h */,
 				D98BBFE11A642E2200B3AE07 /* FlickrWebService.m */,
-				D9D153961A63FECF002F5062 /* Model */,
 			);
 			name = "Flickr Fetcher";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		D9D153961A63FECF002F5062 /* Model */ = {
@@ -200,6 +201,7 @@
 				D959F2501A64054B0025D4D5 /* Photographer+Create.m */,
 			);
 			name = Model;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

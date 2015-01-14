@@ -11,6 +11,5 @@
 
 @interface FlickrWebService : NSObject
 
-+ (void)getPhotoAtURL:(NSURL *)url withCompletionHandler:(void(^)(UIImage *image, NSError *error))completionBlock;
-
+- (void)startForegroundFlickrFetch;
 @end
