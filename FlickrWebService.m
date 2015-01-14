@@ -10,21 +10,36 @@
 #import "FlickrFetcher.h"
 #import "FlickrWebService.h"
 #import "Photo+FromFlickr.h"
+#import "CDTSharedManagedDocument.h"
 
 static NSString * const CDTFlickrFetchNSURLDownloadTaskIdentifer = @"CDTFlickrFetchNSURLDownloadTaskIdentifer";
 static NSInteger const CDTBackgroundFlickrFetchTimeout = 10;
-static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
 
 @interface FlickrWebService() <NSURLSessionDownloadDelegate>
-@property (copy, nonatomic) void (^flickrDownloadBackgroundURLSessionCompletionHandler)();
+@property (strong, nonatomic) NSURL *flickrURL;
 @property (strong, nonatomic) NSURLSession *flickrDownloadSession;
-@property (strong, nonatomic) NSTimer *flickrForegroundFetchTimer;
 @property (strong, nonatomic) NSManagedObjectContext *photoDatabaseContext;
 @end
 
 @implementation FlickrWebService
 
 // standard "get photo information from Flickr URL" code
+
+- (NSURL *)flickrURL
+{
+    if (!_flickrURL) {
+        _flickrURL = [FlickrFetcher URLforRecentGeoreferencedPhotos];
+    }
+    return _flickrURL;
+}
+
+- (NSManagedObjectContext *)photoDatabaseContext
+{
+    if (!_photoDatabaseContext) {
+        _photoDatabaseContext = [CDTSharedManagedDocument sharedManagedDocument].context;
+    }
+    return _photoDatabaseContext;
+}
 
 - (NSArray *)flickrPhotosAtURL:(NSURL *)url
 {
@@ -48,7 +63,7 @@ static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
         // let's see if we're already working on a fetch ...
         if (![downloadTasks count]) {
             // ... not working on a fetch, let's start one up
-            NSURLSessionDownloadTask *task =    [self.flickrDownloadSession downloadTaskWithURL:[FlickrFetcher URLforRecentGeoreferencedPhotos]];
+            NSURLSessionDownloadTask *task =    [self.flickrDownloadSession downloadTaskWithURL:self.flickrURL];
             task.taskDescription = CDTFlickrFetchNSURLDownloadTaskIdentifer;
             [task resume];
         } else {
@@ -58,6 +73,10 @@ static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
     }];
 }
 
+- (void)startBackgroundFlickrFetch:(NSTimer *)timer // NSTimer target/action always takes an NSTimer as an argument
+{
+    [self startBackgroundFlickrFetch];
+}
 
 - (void)startForegroundFlickrFetchWithCompletion:(void(^)())completion
 {
@@ -66,7 +85,7 @@ static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
         sessionConfig.allowsCellularAccess = NO;
         sessionConfig.timeoutIntervalForRequest = CDTBackgroundFlickrFetchTimeout; // want to be a good background citizen!
         NSURLSession *session = [NSURLSession sessionWithConfiguration:sessionConfig];
-        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[FlickrFetcher URLforRecentGeoreferencedPhotos]];
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:self.flickrURL];
         NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request completionHandler:^(NSURL *localFile, NSURLResponse *response, NSError *error) {
             if (error) {
                 NSLog(@"Flickr background fetch failed: %@", error.localizedDescription);

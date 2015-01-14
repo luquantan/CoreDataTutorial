@@ -11,6 +11,11 @@
 
 @interface FlickrWebService : NSObject
 
+@property (copy, nonatomic) void (^flickrDownloadBackgroundURLSessionCompletionHandler)();
+@property (strong, nonatomic) NSTimer *flickrForegroundFetchTimer;
+
+- (void)startBackgroundFlickrFetch;
+- (void)startBackgroundFlickrFetch:(NSTimer *)timer;
 - (void)startForegroundFlickrFetchWithCompletion:(void(^)())completion;
 
 @end
