@@ -6,6 +6,8 @@
 //  Copyright (c) 2013 Stanford University. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #import "PhotographersCDTVC.h"
 #import "Photographer.h"
 #import "CDTSharedManagedDocument.h"
@@ -50,7 +52,7 @@ static NSString * const CDTPhotographerCDTVCReusableCellIdentifier = @"Photograp
     
     cell.textLabel.text = photographer.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%d photos", (int)[photographer.photos count]];
-    
+        
     return cell;
 }
 

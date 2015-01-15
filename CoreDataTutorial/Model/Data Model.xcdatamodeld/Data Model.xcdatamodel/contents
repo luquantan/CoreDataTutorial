@@ -12,9 +12,16 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numOfPhotosTaken" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="photos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Photo" inverseName="whoTook" inverseEntity="Photo" syncable="YES"/>
+        <relationship name="photosTakenAt" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Region" inverseName="takenBy" inverseEntity="Region" syncable="YES"/>
+    </entity>
+    <entity name="Region" representedClassName="Region" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="numOfPhotographers" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="takenBy" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Photographer" inverseName="photosTakenAt" inverseEntity="Photographer" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Photographer" positionX="-1001" positionY="-126" width="128" height="88"/>
-        <element name="Photo" positionX="-1287" positionY="-153" width="128" height="133"/>
+        <element name="Photo" positionX="-1260" positionY="-126" width="128" height="133"/>
+        <element name="Photographer" positionX="-956" positionY="-256" width="128" height="103"/>
+        <element name="Region" positionX="-666" positionY="-90" width="128" height="88"/>
     </elements>
 </model>
