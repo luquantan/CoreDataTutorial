@@ -14,6 +14,7 @@
 @property (copy, nonatomic) void (^flickrDownloadBackgroundURLSessionCompletionHandler)();
 @property (strong, nonatomic) NSTimer *flickrForegroundFetchTimer;
 
++ (void)getPhotoAtURL:(NSURL *)thumbnailURL withCompletionHandler:(void(^)(UIImage *image, NSError *error))completion;
 - (void)startBackgroundFlickrFetch;
 - (void)startBackgroundFlickrFetch:(NSTimer *)timer;
 - (void)startForegroundFlickrFetchWithCompletion:(void(^)())completion;

@@ -23,6 +23,22 @@ static NSInteger const CDTBackgroundFlickrFetchTimeout = 10;
 
 @implementation FlickrWebService
 
++ (void)getPhotoAtURL:(NSURL *)thumbnailURL withCompletionHandler:(void (^)(UIImage *, NSError *))completion
+{
+    NSURLRequest *request = [NSURLRequest requestWithURL:thumbnailURL];
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+    NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        if (!error) {
+            UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+            if (completion) completion(image, nil);
+        } else {
+            if (completion) completion(nil, error);
+        }
+        
+    }];
+    [task resume];
+}
 // standard "get photo information from Flickr URL" code
 
 - (NSURL *)flickrURL
