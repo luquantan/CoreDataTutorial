@@ -10,6 +10,7 @@
 #import "FlickrFetcher.h"
 #import "FlickrWebService.h"
 #import "Photo+FromFlickr.h"
+#import "PhotoDatabaseAvailability.h"
 #import "CDTSharedManagedDocument.h"
 
 static NSString * const CDTFlickrFetchNSURLDownloadTaskIdentifer = @"CDTFlickrFetchNSURLDownloadTaskIdentifer";
@@ -22,6 +23,22 @@ static NSInteger const CDTBackgroundFlickrFetchTimeout = 10;
 @end
 
 @implementation FlickrWebService
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserverForName:PhotoDatabaseAvailabilityNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+            self.photoDatabaseContext = [CDTSharedManagedDocument sharedManagedDocument].context;
+        }];
+        
+        //If statement to check for PhotbaseDataBaseAvailability
+        if ([CDTSharedManagedDocument sharedManagedDocument].context) {
+            self.photoDatabaseContext = [CDTSharedManagedDocument sharedManagedDocument].context;
+        }
+    }
+    return self;
+}
 
 + (void)getPhotoAtURL:(NSURL *)thumbnailURL withCompletionHandler:(void (^)(UIImage *, NSError *))completion
 {
@@ -77,21 +94,18 @@ static NSInteger const CDTBackgroundFlickrFetchTimeout = 10;
     // but that's okay because we're not expecting startFlickrFetch to do anything synchronously anyway
     [self.flickrDownloadSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         // let's see if we're already working on a fetch ...
-        if (![downloadTasks count]) {
+        if ([downloadTasks count] > 0) {
+            // ... we are working on a fetch (let's make sure it (they) is (are) running while we're here)
+            for (NSURLSessionDownloadTask *task in downloadTasks) {
+                [task resume];
+            }
+        } else {
             // ... not working on a fetch, let's start one up
-            NSURLSessionDownloadTask *task =    [self.flickrDownloadSession downloadTaskWithURL:self.flickrURL];
+            NSURLSessionDownloadTask *task = [self.flickrDownloadSession downloadTaskWithURL:self.flickrURL];
             task.taskDescription = CDTFlickrFetchNSURLDownloadTaskIdentifer;
             [task resume];
-        } else {
-            // ... we are working on a fetch (let's make sure it (they) is (are) running while we're here)
-            for (NSURLSessionDownloadTask *task in downloadTasks) [task resume];
         }
     }];
-}
-
-- (void)startBackgroundFlickrFetch:(NSTimer *)timer // NSTimer target/action always takes an NSTimer as an argument
-{
-    [self startBackgroundFlickrFetch];
 }
 
 - (void)startForegroundFlickrFetchWithCompletion:(void(^)())completion
@@ -161,17 +175,19 @@ static NSInteger const CDTBackgroundFlickrFetchTimeout = 10;
     }
 }
 
-// required by the protocol
+/*
+ These are optional methods
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes
 {
     // we don't support resuming an interrupted download task
 }
 
-// required by the protocol
+
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
     // we don't report the progress of a download in our UI, but this is /  a cool method to do that with
 }
+ */
 
 // not required by the protocol, but we should definitely catch errors here
 // so that we can avoid crashes

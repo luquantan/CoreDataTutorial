@@ -24,6 +24,12 @@ static NSString * const CDTPhotographerCDTVCReusableCellIdentifier = @"Photograp
     [[NSNotificationCenter defaultCenter] addObserverForName:PhotoDatabaseAvailabilityNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
         self.managedObjectContext = [CDTSharedManagedDocument sharedManagedDocument].context;
     }];
+    
+    //If statement to check for PhotbaseDataBaseAvailability
+    if ([CDTSharedManagedDocument sharedManagedDocument].context) {
+        self.managedObjectContext = [CDTSharedManagedDocument sharedManagedDocument].context;
+    }
+    
 }
 
 - (void)setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext

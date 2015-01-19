@@ -13,7 +13,9 @@
 static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
 
 @interface AppDelegate ()
+@property (strong, nonatomic) NSManagedObjectContext *photoDatabaseContext;
 @property (strong, nonatomic) FlickrWebService *flickrWebService;
+@property (strong, nonatomic) NSTimer *flickrFetchTimer;
 @end
 
 @implementation AppDelegate
@@ -53,11 +55,12 @@ static NSInteger const CDTForegroundFlickrFetchInterval = 20 * 60;
 {
     _photoDatabaseContext = photoDatabaseContext;
     
-    [self.flickrWebService.flickrForegroundFetchTimer invalidate];
-    self.flickrWebService.flickrForegroundFetchTimer = nil;
+    [self.flickrFetchTimer invalidate];
+    self.flickrFetchTimer = nil;
     
     if (self.photoDatabaseContext) {
-        self.flickrWebService.flickrForegroundFetchTimer = [NSTimer scheduledTimerWithTimeInterval:CDTForegroundFlickrFetchInterval target:self.flickrWebService selector:@selector(startBackgroundFlickrFetch:) userInfo:nil repeats:YES];
+        self.flickrFetchTimer = [NSTimer scheduledTimerWithTimeInterval:CDTForegroundFlickrFetchInterval target:self.flickrWebService selector:@selector(startBackgroundFlickrFetch) userInfo:nil repeats:YES];
     }
+    
 }
 @end
